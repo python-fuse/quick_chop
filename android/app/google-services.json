@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "391673501114",
+    "project_id": "quick-chop-eb2db",
+    "storage_bucket": "quick-chop-eb2db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:391673501114:android:230568c498a8021e05b983",
+        "android_client_info": {
+          "package_name": "com.example.quick_chop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOd8Mb7Y3afpiqYzW-MH1TNcyndLLT98E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
