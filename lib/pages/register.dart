@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quick_chop/pages/verify_otp_page.dart';
 import 'package:quick_chop/utils/text_input.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -17,7 +18,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.tertiary,
       appBar: AppBar(
         title: Text('Sign Up',
             style: GoogleFonts.poppins(
@@ -25,7 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 fontSize: 22,
                 fontWeight: FontWeight.bold)),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15, top: 50),
@@ -41,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   color: Theme.of(context).colorScheme.inversePrimary),
             ),
             Text(
-              'Enter your Phone number and create a strong password',
+              'Enter your Phone number and email',
               style: TextStyle(
                   fontSize: 14,
                   color: Theme.of(context).colorScheme.inversePrimary),
@@ -60,19 +61,19 @@ class _RegisterPageState extends State<RegisterPage> {
             TextInput(
               icon: const Icon(Icons.lock_outline),
               controller: passwordController,
-              hint: 'Password',
-              keyboardType: TextInputType.text,
-              isObscured: true,
+              hint: 'Email',
+              keyboardType: TextInputType.emailAddress,
+              isObscured: false,
             ),
 
-            // confirm password
-            TextInput(
-              icon: const Icon(Icons.lock_outline),
-              controller: confirmPasswordController,
-              hint: 'Confirm Password',
-              keyboardType: TextInputType.text,
-              isObscured: true,
-            ),
+            // // confirm password
+            // TextInput(
+            //   icon: const Icon(Icons.lock_outline),
+            //   controller: confirmPasswordController,
+            //   hint: 'Confirm Password',
+            //   keyboardType: TextInputType.text,
+            //   isObscured: true,
+            // ),
 
             // remember me + forgotpass
 
@@ -99,16 +100,26 @@ class _RegisterPageState extends State<RegisterPage> {
             //   ],
             // ),
 
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Theme.of(context).colorScheme.primary),
-              width: double.infinity,
-              child: const Center(
-                child: Text(
-                  "Register",
-                  style: TextStyle(color: Colors.white, fontSize: 22),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return VerifyOTP(
+                    currentPhone: phoneController.text,
+                  );
+                }));
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Theme.of(context).colorScheme.primary),
+                width: double.infinity,
+                child: const Center(
+                  child: Text(
+                    "Register",
+                    style: TextStyle(color: Colors.white, fontSize: 22),
+                  ),
                 ),
               ),
             ),

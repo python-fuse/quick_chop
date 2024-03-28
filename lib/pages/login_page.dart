@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quick_chop/pages/home_page.dart';
 import 'package:quick_chop/pages/register.dart';
+import 'package:quick_chop/pages/verify_otp_page.dart';
 import 'package:quick_chop/utils/text_input.dart';
 
 class LoginPage extends StatefulWidget {
@@ -24,8 +24,9 @@ class _LoginPageState extends State<LoginPage> {
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.inversePrimary)),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
       ),
+      backgroundColor: Theme.of(context).colorScheme.tertiary,
       body: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15, top: 50),
         child: Column(
@@ -54,30 +55,16 @@ class _LoginPageState extends State<LoginPage> {
               isObscured: false,
             ),
 
-
-            // remember me + forgotpass
+            // remember me
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Checkbox(value: true, onChanged: (val) {}),
-                    Text(
-                      'Remember Me',
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).colorScheme.inversePrimary),
-                    )
-                  ],
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Forgot Password',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.inversePrimary),
-                  ),
+                Checkbox(value: true, onChanged: (val) {}),
+                Text(
+                  'Remember Me',
+                  style: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.inversePrimary),
                 )
               ],
             ),
@@ -85,8 +72,10 @@ class _LoginPageState extends State<LoginPage> {
             GestureDetector(
               onTap: () {
                 Navigator.of(context)
-                    .pushReplacement(MaterialPageRoute(builder: (context) {
-                  return const HomePage();
+                    .push(MaterialPageRoute(builder: (context) {
+                  return VerifyOTP(
+                    currentPhone: phoneController.text,
+                  );
                 }));
               },
               child: Container(
@@ -97,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 child: const Center(
                   child: Text(
-                    "Sign In",
+                    "Send OTP",
                     style: TextStyle(color: Colors.white, fontSize: 22),
                   ),
                 ),
