@@ -29,86 +29,88 @@ class _VerifyOTPState extends State<VerifyOTP> {
       backgroundColor: Theme.of(context).colorScheme.tertiary,
       body: Padding(
         padding: const EdgeInsets.only(top: 50, left: 15, right: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Verification',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 52,
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              'Enter the OTP Code we sent you at',
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              widget.currentPhone,
-              style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary, fontSize: 20),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: OTPTextField(
-                length: 6,
-                fieldWidth: 40,
-                margin: const EdgeInsets.all(3),
-                contentPadding: const EdgeInsets.all(3),
-                otpFieldStyle: OtpFieldStyle(
-                  enabledBorderColor: Colors.grey,
-                  focusBorderColor: Theme.of(context).colorScheme.primary,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Verification',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 52,
                 ),
-                fieldStyle: FieldStyle.box,
-                textFieldAlignment: MainAxisAlignment.spaceBetween,
               ),
-            ),
-            Row(
-              children: [
-                const Text(
-                  "Didn't recieve SMS?",
-                ),
-                TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      'Resend Code',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ))
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context)
-                    .pushReplacement(MaterialPageRoute(builder: (context) {
-                  return const HomePage();
-                }));
-              },
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Theme.of(context).colorScheme.primary),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                'Enter the OTP Code we sent you at',
+                style: TextStyle(fontSize: 18),
+              ),
+              Text(
+                widget.currentPhone,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary, fontSize: 20),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
                 width: double.infinity,
-                child: const Center(
-                  child: Text(
-                    "Verify",
-                    style: TextStyle(color: Colors.white, fontSize: 22),
+                child: OTPTextField(
+                  length: 6,
+                  fieldWidth: 40,
+                  margin: const EdgeInsets.all(3),
+                  contentPadding: const EdgeInsets.all(3),
+                  otpFieldStyle: OtpFieldStyle(
+                    enabledBorderColor: Colors.grey,
+                    focusBorderColor: Theme.of(context).colorScheme.primary,
+                  ),
+                  fieldStyle: FieldStyle.box,
+                  textFieldAlignment: MainAxisAlignment.spaceBetween,
+                ),
+              ),
+              Row(
+                children: [
+                  const Text(
+                    "Didn't recieve SMS?",
+                  ),
+                  TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Resend Code',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ))
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .pushReplacement(MaterialPageRoute(builder: (context) {
+                    return const HomePage();
+                  }));
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Theme.of(context).colorScheme.primary),
+                  width: double.infinity,
+                  child: const Center(
+                    child: Text(
+                      "Verify",
+                      style: TextStyle(color: Colors.white, fontSize: 22),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
