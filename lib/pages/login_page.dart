@@ -29,92 +29,94 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Theme.of(context).colorScheme.tertiary,
       body: Padding(
         padding: const EdgeInsets.only(left: 15, right: 15, top: 50),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
-              'Welcome Back to Quick Chop',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.lato(
-                  fontSize: 48,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.inversePrimary),
-            ),
-            Text(
-              'Enter your Phone number to Sign In',
-              style: GoogleFonts.lato(
-                  color: Theme.of(context).colorScheme.inversePrimary),
-            ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                'Welcome Back to Quick Chop',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.lato(
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.inversePrimary),
+              ),
+              Text(
+                'Enter your Phone number to Sign In',
+                style: GoogleFonts.lato(
+                    color: Theme.of(context).colorScheme.inversePrimary),
+              ),
 
-            // Phone input
-            TextInput(
-              icon: const Icon(Icons.person_outline),
-              controller: phoneController,
-              hint: 'Phone number',
-              keyboardType: TextInputType.phone,
-              isObscured: false,
-            ),
+              // Phone input
+              TextInput(
+                icon: const Icon(Icons.person_outline),
+                controller: phoneController,
+                hint: 'Phone number',
+                keyboardType: TextInputType.phone,
+                isObscured: false,
+              ),
 
-            // remember me
+              // remember me
 
-            Row(
-              children: [
-                Checkbox(value: true, onChanged: (val) {}),
-                Text(
-                  'Remember Me',
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context).colorScheme.inversePrimary),
-                )
-              ],
-            ),
+              Row(
+                children: [
+                  Checkbox(value: true, onChanged: (val) {}),
+                  Text(
+                    'Remember Me',
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.inversePrimary),
+                  )
+                ],
+              ),
 
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) {
-                  return VerifyOTP(
-                    currentPhone: phoneController.text,
-                  );
-                }));
-              },
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Theme.of(context).colorScheme.primary),
-                width: double.infinity,
-                child: const Center(
-                  child: Text(
-                    "Send OTP",
-                    style: TextStyle(color: Colors.white, fontSize: 22),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return VerifyOTP(
+                      currentPhone: phoneController.text,
+                    );
+                  }));
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Theme.of(context).colorScheme.primary),
+                  width: double.infinity,
+                  child: const Center(
+                    child: Text(
+                      "Send OTP",
+                      style: TextStyle(color: Colors.white, fontSize: 22),
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 80),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Don't have an account yet?",
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (c) => const RegisterPage()));
-                  },
-                  child: Text(
-                    'Register Now',
-                    style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        color: Theme.of(context).colorScheme.primary,
-                        fontSize: 14),
+              const SizedBox(height: 80),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Don't have an account yet?",
                   ),
-                )
-              ],
-            ),
-          ],
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (c) => const RegisterPage()));
+                    },
+                    child: Text(
+                      'Register Now',
+                      style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize: 14),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
