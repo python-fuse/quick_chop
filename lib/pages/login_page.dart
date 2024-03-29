@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:quick_chop/pages/register.dart';
+import 'package:quick_chop/pages/verify_otp_page.dart';
+import 'package:quick_chop/services/auth_service.dart';
 import 'package:quick_chop/utils/text_input.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({Key? key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
-bool loading = false;
-
 class _LoginPageState extends State<LoginPage> {
+  bool loading = false;
+
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -70,18 +75,49 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 20),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                setState(() {
+                  loading = true;
+                });
+
+                authService.registerWithPhoneSession(
+                  "+234${phoneController.text.trim()}",
+                  () {
+                    setState(() {
+                      loading = false;
+                    });
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (c) => VerifyOTP(
+                                currentPhone: phoneController.text,
+                              )),
+                    );
+                  },
+                  () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('An error occurred'),
+                      ),
+                    );
+                  },
+                );
+
+                // setState should be inside the authService callback to ensure it is set
+              },
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Theme.of(context).colorScheme.primary),
+                  borderRadius: BorderRadius.circular(8),
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 width: double.infinity,
-                child: const Center(
-                  child: Text(
-                    "Send OTP",
-                    style: TextStyle(color: Colors.white, fontSize: 22),
-                  ),
+                child: Center(
+                  child: loading
+                      ? const CircularProgressIndicator()
+                      : const Text(
+                          "Send OTP",
+                          style: TextStyle(color: Colors.white, fontSize: 22),
+                        ),
                 ),
               ),
             ),
@@ -96,17 +132,19 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (c) => const RegisterPage()));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (c) => const RegisterPage()),
+                    );
                   },
                   child: loading
                       ? const CircularProgressIndicator()
                       : Text(
                           'Register Now',
                           style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: 14),
+                            decoration: TextDecoration.underline,
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 14,
+                          ),
                         ),
                 ),
               ],

@@ -1,31 +1,39 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_chop/pages/home_page.dart';
+import 'package:quick_chop/services/auth_service.dart';
 
-class VerifyOTP extends StatelessWidget {
-  final String? currentPhone;
+class VerifyOTP extends StatefulWidget {
+  final String currentPhone;
 
-  // final String verificationId;
-
-  VerifyOTP({
+  const VerifyOTP({
     super.key,
-    this.currentPhone,
-    // required this.verificationId,
+    required this.currentPhone,
   });
 
-  String otp = '';
+  @override
+  State<VerifyOTP> createState() => _VerifyOTPState();
+}
+
+class _VerifyOTPState extends State<VerifyOTP> {
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    String otp = '';
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign In',
-            style: GoogleFonts.poppins(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.inversePrimary)),
+        title: Text(
+          'Sign In',
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.inversePrimary,
+          ),
+        ),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.tertiary,
       ),
@@ -43,21 +51,19 @@ class VerifyOTP extends StatelessWidget {
                   fontSize: 52,
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               const Text(
                 'Enter the OTP Code we sent you at',
                 style: TextStyle(fontSize: 18),
               ),
               Text(
-                currentPhone!,
+                widget.currentPhone,
                 style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary, fontSize: 20),
+                  color: Theme.of(context).colorScheme.primary,
+                  fontSize: 20,
+                ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: OTPTextField(
@@ -79,33 +85,56 @@ class VerifyOTP extends StatelessWidget {
               Row(
                 children: [
                   const Text(
-                    "Didn't recieve SMS?",
+                    "Didn't receive SMS?",
                   ),
                   TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Resend Code',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ))
+                    onPressed: () {
+                      //TODO: Implement resend functionality
+                    },
+                    child: Text(
+                      'Resend Code',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ),
                 ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  authService.verifyOtp(
+                    otp,
+                    () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (c) => const HomePage(),
+                        ),
+                      );
+                    },
+                    () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Incorrect OTP'),
+                        ),
+                      );
+                    },
+                  );
+                },
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).colorScheme.primary),
+                    borderRadius: BorderRadius.circular(8),
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                   width: double.infinity,
                   child: const Center(
                     child: Text(
                       "Verify",
-                      style: TextStyle(color: Colors.white, fontSize: 22),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                      ),
                     ),
                   ),
                 ),

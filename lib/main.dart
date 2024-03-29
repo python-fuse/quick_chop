@@ -2,18 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_chop/pages/welcome_page.dart';
 import 'package:quick_chop/theme/theme_provider.dart';
+import 'package:appwrite/appwrite.dart'; // Import the Appwrite library
+import 'package:quick_chop/services/auth_service.dart'; // Import your AuthService
 
 void main() async {
-  runApp(ChangeNotifierProvider(
-    create: (context) => ThemeProvider(),
-    child: const MyApp(),
-  ));
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize the Appwrite client
+  final Client client = Client();
+  client
+      .setEndpoint('https://cloud.appwrite.io/v1')
+      .setProject('6606bae6508058e6bdf9');
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ThemeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AuthService(client), // Provide AuthService
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
