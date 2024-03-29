@@ -42,59 +42,82 @@ class MenuPage extends StatelessWidget {
         imagePath: 'lib/assets/indomie_egg.jpeg',
         category: FoodCategory.snack,
         availableAddons: []),
+    Food(
+        name: 'Burger',
+        description: 'Spicy and delicious',
+        price: 'N500',
+        rating: 4.5,
+        imagePath: 'lib/assets/indomie_egg.jpeg',
+        category: FoodCategory.snack,
+        availableAddons: []),
+    Food(
+        name: 'Burger',
+        description: 'Spicy and delicious',
+        price: 'N500',
+        rating: 4.5,
+        imagePath: 'lib/assets/indomie_egg.jpeg',
+        category: FoodCategory.snack,
+        availableAddons: []),
+    Food(
+        name: 'Burger',
+        description: 'Spicy and delicious',
+        price: 'N500',
+        rating: 4.5,
+        imagePath: 'lib/assets/indomie_egg.jpeg',
+        category: FoodCategory.snack,
+        availableAddons: []),
+    Food(
+        name: 'Burger',
+        description: 'Spicy and delicious',
+        price: 'N500',
+        rating: 4.5,
+        imagePath: 'lib/assets/indomie_egg.jpeg',
+        category: FoodCategory.snack,
+        availableAddons: []),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Container(
-              height: double.infinity,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colors.pink.shade100.withOpacity(0.3),
-                    Theme.of(context).colorScheme.tertiary.withOpacity(0.2),
-                  ],
-                ),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.pink.shade100.withOpacity(0.3),
+        title: Text(
+          'Welcome, User',
+          style: GoogleFonts.poppins(fontSize: 24),
+        ),
+        actions: [
+          IconButton(
+            color: Colors.white,
+            onPressed: () {},
+            icon: Icon(
+              Icons.settings,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          )
+        ],
+      ),
+      body: Stack(
+        children: [
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomRight,
+                colors: [
+                  Colors.pink.shade100.withOpacity(0.3),
+                  Colors.pink.shade50.withOpacity(0.1),
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+          ),
+          Scrollbar(
+            thumbVisibility: false,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(top: 10, left: 10),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.grey.shade100,
-                        child: const Icon(
-                          Icons.person,
-                          size: 32,
-                          color: Colors.pink,
-                        ),
-                      ),
-                      Text(
-                        'Welcome, User',
-                        style: GoogleFonts.poppins(fontSize: 24),
-                      ),
-                      IconButton(
-                          color: Colors.white,
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.settings,
-                            color: Theme.of(context).colorScheme.primary,
-                          ))
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
                   Text(
                     'Ready to order your favourite food?',
                     style: GoogleFonts.poppins(fontSize: 32),
@@ -129,7 +152,7 @@ class MenuPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 50,
                   ),
 
                   Row(
@@ -151,6 +174,7 @@ class MenuPage extends StatelessWidget {
                   SizedBox(
                     height: 190,
                     child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
                       itemCount: popularfoods.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
@@ -164,37 +188,42 @@ class MenuPage extends StatelessWidget {
                       },
                     ),
                   ),
-                  // list of all available foods using the FoodTile widget
 
-                  const SizedBox(
-                    height: 20,
+                  const SizedBox(height: 20),
+
+                  const Text(
+                    'All Available Food',
+                    style: TextStyle(fontSize: 24),
                   ),
+                  const SizedBox(height: 10),
 
-                  // list of all available foods using the FoodTile widget
-                  Expanded(
-                      child: ListView.separated(
-                    itemBuilder: (context, index) {
-                      return FoodTile(
-                        name: popularfoods[index].name,
-                        description: popularfoods[index].description,
-                        price: popularfoods[index].price,
-                        rating: popularfoods[index].rating,
-                        imagePath: popularfoods[index].imagePath,
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        color: Colors.pink[600],
-                        thickness: 2,
-                      );
-                    },
-                    itemCount: popularfoods.length,
-                  ))
+                  SizedBox(
+                    height: 300,
+                    width: double.infinity,
+                    child: GridView.builder(
+                      itemCount: popularfoods.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        // mainAxisSpacing: 10,
+                        // crossAxisSpacing: 10,
+                        // childAspectRatio: 0.8,
+                      ),
+                      itemBuilder: (context, index) {
+                        return FoodItem(
+                          name: popularfoods[index].name,
+                          description: popularfoods[index].description,
+                          price: popularfoods[index].price,
+                          imagePath: popularfoods[index].imagePath,
+                        );
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

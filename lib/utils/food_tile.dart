@@ -1,70 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-class FoodTile extends StatelessWidget {
+class FoodItem extends StatelessWidget {
   final String name;
   final String description;
   final String price;
-  final double rating;
   final String imagePath;
 
-  const FoodTile({
-    super.key,
+  const FoodItem({super.key, 
     required this.name,
     required this.description,
     required this.price,
-    required this.rating,
     required this.imagePath,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 300,
-      child: Flex(
-        direction: Axis.horizontal,
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            children: [
-              Text(name,
-                  style: GoogleFonts.cinzel(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  )),
-              Text(
-                description,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.normal,
-                ),
+          Expanded(
+            flex: 2,
+            
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.cover,
               ),
-              Text(
-                price,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.star_rounded,
-                    color: Colors.yellow,
-                    size: 20,
-                  ),
-                  Text(
-                    rating.toString(),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
-          Image.asset(imagePath),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  description,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                Text(
+                  'Price: $price',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

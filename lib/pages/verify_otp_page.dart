@@ -1,20 +1,23 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
-import 'package:quick_chop/pages/home_page.dart';
 
-class VerifyOTP extends StatefulWidget {
-  final String currentPhone;
+class VerifyOTP extends StatelessWidget {
+  final String? currentPhone;
 
-  const VerifyOTP({super.key, required this.currentPhone});
+  // final String verificationId;
 
-  @override
-  State<VerifyOTP> createState() => _VerifyOTPState();
-}
+  VerifyOTP({
+    super.key,
+    this.currentPhone,
+    // required this.verificationId,
+  });
 
-class _VerifyOTPState extends State<VerifyOTP> {
+  String otp = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +51,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                 style: TextStyle(fontSize: 18),
               ),
               Text(
-                widget.currentPhone,
+                currentPhone!,
                 style: TextStyle(
                     color: Theme.of(context).colorScheme.primary, fontSize: 20),
               ),
@@ -68,6 +71,9 @@ class _VerifyOTPState extends State<VerifyOTP> {
                   ),
                   fieldStyle: FieldStyle.box,
                   textFieldAlignment: MainAxisAlignment.spaceBetween,
+                  onCompleted: (pin) {
+                    otp = pin;
+                  },
                 ),
               ),
               Row(
@@ -89,12 +95,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                 height: 20,
               ),
               GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .pushReplacement(MaterialPageRoute(builder: (context) {
-                    return const HomePage();
-                  }));
-                },
+                onTap: () {},
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
