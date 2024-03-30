@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:quick_chop/pages/home_page.dart';
 import 'package:quick_chop/pages/login_page.dart';
 import 'package:quick_chop/pages/register.dart';
-import 'package:quick_chop/pages/verify_otp_page.dart';
 import 'package:quick_chop/pages/welcome_page.dart';
 import 'package:quick_chop/theme/theme_provider.dart';
 import 'package:appwrite/appwrite.dart'; // Import the Appwrite library

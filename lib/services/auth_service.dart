@@ -4,23 +4,31 @@ import 'package:flutter/material.dart';
 
 class AuthService with ChangeNotifier {
   late final Account account;
-  late final Databases database;
+  late final Databases databases;
   late Token user;
 
   AuthService(Client client) {
     account = Account(client);
-    database = Databases(client);
+    databases = Databases(client);
   }
 
   // Function to add email, name and password to the current account
-  Future<void> updateUser(
-      String email, String password, String fullName,Function nextStep,Function handleError) async {
+  Future<void> updateUser({
+    required String email,
+    required String password,
+    required String fullName,
+    required Function nextStep,
+    required Function handleError,
+    required String level,
+    required String department,
+  }) async {
     try {
       await account.updateEmail(email: email, password: password);
       await account.updateName(name: fullName);
+      await saveUserData(fullName, level, department);
       nextStep();
     } catch (e) {
-    print(e);
+      print(e);
       handleError();
     }
   }
@@ -31,7 +39,6 @@ class AuthService with ChangeNotifier {
       await account.createEmailSession(email: email, password: password);
       nextStep();
     } catch (e) {
-    print(e);
       handleLoginError();
     }
   }
@@ -43,6 +50,7 @@ class AuthService with ChangeNotifier {
           userId: ID.unique(), phone: phoneNumber);
       nextScreen();
     } catch (e) {
+      print(e);
       handleAuthError();
     }
   }
@@ -66,5 +74,21 @@ class AuthService with ChangeNotifier {
     } catch (e) {
       return;
     }
+  }
+
+  //saving user data to the database
+
+  Future<void> saveUserData(fullname, level, department) async {
+    await databases.createDocument(
+      databaseId: 'quickchop',
+      collectionId: 'users',
+      documentId: user.userId,
+      data: {
+        'userId': user.userId,
+        'fullName': fullname,
+        'level': level,
+        'department': department,
+      },
+    );
   }
 }

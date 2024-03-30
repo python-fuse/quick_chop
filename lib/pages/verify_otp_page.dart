@@ -5,7 +5,6 @@ import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_chop/pages/finish_setup.dart';
-import 'package:quick_chop/pages/home_page.dart';
 import 'package:quick_chop/services/auth_service.dart';
 
 class VerifyOTP extends StatefulWidget {

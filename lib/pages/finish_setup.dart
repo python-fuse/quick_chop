@@ -55,7 +55,6 @@ class _FinishSetupState extends State<FinishSetup> {
               ),
               Text(
                 'Fill in your information',
-                
                 style: TextStyle(
                     fontSize: 18,
                     color: Theme.of(context).colorScheme.inversePrimary),
@@ -66,7 +65,7 @@ class _FinishSetupState extends State<FinishSetup> {
               ),
 
               const SizedBox(height: 5),
-
+//TODO: Fix the input fields
               // Phone input
               Form(
                 key: _formKey,
@@ -85,9 +84,7 @@ class _FinishSetupState extends State<FinishSetup> {
                         return null;
                       },
                     ),
-                    
-                              const SizedBox(height: 10),
-                              
+                    const SizedBox(height: 10),
                     TextInput(
                       icon: const Icon(Icons.email_outlined),
                       controller: emailController,
@@ -101,9 +98,7 @@ class _FinishSetupState extends State<FinishSetup> {
                         return null;
                       },
                     ),
-                    
-                              const SizedBox(height: 10),
-                              
+                    const SizedBox(height: 10),
                     TextInput(
                       icon: const Icon(Icons.school_outlined),
                       controller: levelController,
@@ -117,9 +112,7 @@ class _FinishSetupState extends State<FinishSetup> {
                         return null;
                       },
                     ),
-                    
-                              const SizedBox(height: 10),
-                              
+                    const SizedBox(height: 10),
                     TextInput(
                       icon: const Icon(Icons.class_outlined),
                       controller: deptController,
@@ -133,9 +126,7 @@ class _FinishSetupState extends State<FinishSetup> {
                         return null;
                       },
                     ),
-                    
-                              const SizedBox(height: 10),
-                              
+                    const SizedBox(height: 10),
                     TextInput(
                       icon: const Icon(Icons.lock_outline),
                       controller: passwordController,
@@ -151,9 +142,7 @@ class _FinishSetupState extends State<FinishSetup> {
                         return null;
                       },
                     ),
-                    
-                              const SizedBox(height: 10),
-                              	
+                    const SizedBox(height: 10),
                     TextInput(
                       icon: const Icon(Icons.lock_outline),
                       controller: confirmPasswordController,
@@ -180,16 +169,23 @@ class _FinishSetupState extends State<FinishSetup> {
               GestureDetector(
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
-                    authService.updateUser(emailController.text,
-                        passwordController.text, nameController.text, () {
-                      Navigator.of(context).pushNamed('/home');
-                    }, () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('An error occurred, please try again'),
-                        ),
-                      );
-                    });
+                    authService.updateUser(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        fullName: nameController.text,
+                        level: levelController.text,
+                        department: deptController.text,
+                        nextStep: () {
+                          Navigator.of(context).pushNamed('/home');
+                        },
+                        handleError: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content:
+                                  Text('An error occurred, please try again'),
+                            ),
+                          );
+                        });
                   }
                 },
                 child: Container(
@@ -206,7 +202,6 @@ class _FinishSetupState extends State<FinishSetup> {
                   ),
                 ),
               ),
-              
             ],
           ),
         ),
