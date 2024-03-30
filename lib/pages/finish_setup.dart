@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:quick_chop/services/auth_service.dart';
 import 'package:quick_chop/utils/text_input.dart';
 
 class FinishSetup extends StatefulWidget {
@@ -13,6 +15,7 @@ class _FinishSetupState extends State<FinishSetup> {
   final _formKey = GlobalKey<FormState>();
 
   var emailController = TextEditingController();
+  var nameController = TextEditingController();
   var levelController = TextEditingController();
   var deptController = TextEditingController();
   var passwordController = TextEditingController();
@@ -20,6 +23,7 @@ class _FinishSetupState extends State<FinishSetup> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context, listen: false);
     return Scaffold(
       //resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).colorScheme.tertiary,
@@ -45,19 +49,20 @@ class _FinishSetupState extends State<FinishSetup> {
                 "Let's finish setting up your account",
                 textAlign: TextAlign.start,
                 style: GoogleFonts.lato(
-                    fontSize: 55,
+                    fontSize: 44,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.inversePrimary),
               ),
               Text(
                 'Fill in your information',
+                
                 style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 18,
                     color: Theme.of(context).colorScheme.inversePrimary),
               ),
               const Text(
-                "Please don't exit the app",
-                style: TextStyle(fontSize: 14, color: Colors.red),
+                "Do not exit the app before this step!",
+                style: TextStyle(fontSize: 18, color: Colors.red),
               ),
 
               const SizedBox(height: 5),
@@ -67,6 +72,22 @@ class _FinishSetupState extends State<FinishSetup> {
                 key: _formKey,
                 child: Column(
                   children: [
+                    TextInput(
+                      icon: const Icon(Icons.person_outline),
+                      controller: nameController,
+                      hint: 'Full name',
+                      keyboardType: TextInputType.text,
+                      isObscured: false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Enter your full name';
+                        }
+                        return null;
+                      },
+                    ),
+                    
+                              const SizedBox(height: 10),
+                              
                     TextInput(
                       icon: const Icon(Icons.email_outlined),
                       controller: emailController,
@@ -80,6 +101,9 @@ class _FinishSetupState extends State<FinishSetup> {
                         return null;
                       },
                     ),
+                    
+                              const SizedBox(height: 10),
+                              
                     TextInput(
                       icon: const Icon(Icons.school_outlined),
                       controller: levelController,
@@ -93,11 +117,14 @@ class _FinishSetupState extends State<FinishSetup> {
                         return null;
                       },
                     ),
+                    
+                              const SizedBox(height: 10),
+                              
                     TextInput(
                       icon: const Icon(Icons.class_outlined),
                       controller: deptController,
                       hint: 'Department',
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.text,
                       isObscured: false,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -106,6 +133,9 @@ class _FinishSetupState extends State<FinishSetup> {
                         return null;
                       },
                     ),
+                    
+                              const SizedBox(height: 10),
+                              
                     TextInput(
                       icon: const Icon(Icons.lock_outline),
                       controller: passwordController,
@@ -121,6 +151,9 @@ class _FinishSetupState extends State<FinishSetup> {
                         return null;
                       },
                     ),
+                    
+                              const SizedBox(height: 10),
+                              	
                     TextInput(
                       icon: const Icon(Icons.lock_outline),
                       controller: confirmPasswordController,
@@ -145,7 +178,20 @@ class _FinishSetupState extends State<FinishSetup> {
               const SizedBox(height: 20),
 
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  if (_formKey.currentState!.validate()) {
+                    authService.updateUser(emailController.text,
+                        passwordController.text, nameController.text, () {
+                      Navigator.of(context).pushNamed('/home');
+                    }, () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('An error occurred, please try again'),
+                        ),
+                      );
+                    });
+                  }
+                },
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -154,36 +200,13 @@ class _FinishSetupState extends State<FinishSetup> {
                   width: double.infinity,
                   child: const Center(
                     child: Text(
-                      "Send OTP",
+                      "Finish",
                       style: TextStyle(color: Colors.white, fontSize: 22),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Already have an account?",
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.inversePrimary,
-                        fontSize: 18),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      'Log In',
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 18),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                ],
-              ),
+              
             ],
           ),
         ),

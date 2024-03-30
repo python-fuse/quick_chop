@@ -49,18 +49,19 @@ class _RegisterPageState extends State<RegisterPage> {
                 'Welcome to Quick Chop',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.lato(
-                    fontSize: 55,
+                    fontSize: 57,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.inversePrimary),
               ),
+                            const SizedBox(height: 20),
               Text(
-                'Enter your details to create an account',
+                'Enter your phone number to get started',
                 style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 19,
                     color: Theme.of(context).colorScheme.inversePrimary),
               ),
 
-              const SizedBox(height: 5),
+              const SizedBox(height: 40),
 
               // Phone input
               Form(
@@ -73,7 +74,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   isObscured: false,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Enter a password';
+                      return 'Enter your number';
                     }
                     return null;
                   },
@@ -87,7 +88,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   if (_formKey.currentState!.validate()) {
                     // If the form is valid, send otp.
                     authService.registerWithPhoneSession(
-                        phoneController.text.trim(), () {
+                        "+234${phoneController.text}", () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(

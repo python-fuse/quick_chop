@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                   // If the form is valid,login the user.
                   authService.login(
                       emailController.text.trim(), passwordController.text, () {
-                    Navigator.pushNamed(context, 'home');
+                    Navigator.pushNamed(context, '/home');
                   }, () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(

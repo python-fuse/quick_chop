@@ -109,7 +109,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                     () {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                          builder: (c) => const FinishSetup(),
+                          builder: (context) => const FinishSetup(),
                         ),
                       );
                     },

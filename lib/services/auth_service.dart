@@ -4,10 +4,25 @@ import 'package:flutter/material.dart';
 
 class AuthService with ChangeNotifier {
   late final Account account;
+  late final Databases database;
   late Token user;
 
   AuthService(Client client) {
     account = Account(client);
+    database = Databases(client);
+  }
+
+  // Function to add email, name and password to the current account
+  Future<void> updateUser(
+      String email, String password, String fullName,Function nextStep,Function handleError) async {
+    try {
+      await account.updateEmail(email: email, password: password);
+      await account.updateName(name: fullName);
+      nextStep();
+    } catch (e) {
+    print(e);
+      handleError();
+    }
   }
 
   Future login(
@@ -16,7 +31,7 @@ class AuthService with ChangeNotifier {
       await account.createEmailSession(email: email, password: password);
       nextStep();
     } catch (e) {
-      print(e);
+    print(e);
       handleLoginError();
     }
   }
@@ -44,4 +59,12 @@ class AuthService with ChangeNotifier {
   }
 
   // logout
+
+  Future<void> logout() async {
+    try {
+      await account.deleteSession(sessionId: 'current');
+    } catch (e) {
+      return;
+    }
+  }
 }

@@ -35,7 +35,7 @@ class _PasswordInputState extends State<PasswordInput> {
             TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
         prefixIcon: widget.icon,
         suffixIcon: IconButton(
-          icon: Icon(isObscured ? Icons.visibility : Icons.visibility_off),
+          icon: Icon(isObscured ? Icons.visibility : Icons.visibility_off,color:Colors.pink),
           onPressed: () {
             setState(() {
               isObscured = !isObscured;
