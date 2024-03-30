@@ -4,6 +4,7 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:provider/provider.dart';
+import 'package:quick_chop/pages/finish_setup.dart';
 import 'package:quick_chop/pages/home_page.dart';
 import 'package:quick_chop/services/auth_service.dart';
 
@@ -108,7 +109,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                     () {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                          builder: (c) => const HomePage(),
+                          builder: (c) => const FinishSetup(),
                         ),
                       );
                     },

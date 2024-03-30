@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_chop/pages/register.dart';
-import 'package:quick_chop/pages/verify_otp_page.dart';
 import 'package:quick_chop/services/auth_service.dart';
-import 'package:quick_chop/utils/text_input.dart';
+import 'package:quick_chop/utils/login_form.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key});
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -15,6 +14,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool loading = false;
+  final _formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,21 +47,20 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 20),
             Text(
-              'Enter your Phone number to Sign In',
+              'Enter your Email to Sign In',
               style: GoogleFonts.lato(
                   color: Theme.of(context).colorScheme.inversePrimary),
             ),
             const SizedBox(height: 20),
 
-            // Phone input
-            TextInput(
-              icon: const Icon(Icons.person_outline),
-              controller: phoneController,
-              hint: 'Phone number',
-              keyboardType: TextInputType.phone,
-              isObscured: false,
-            ),
+            // form for login
+            LoginForm(
+                formKey: _formKey,
+                emailController: emailController,
+                passwordController: passwordController),
+
             const SizedBox(height: 5),
+
             // remember me
 
             Row(
@@ -76,33 +77,21 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-                setState(() {
-                  loading = true;
-                });
-
-                authService.registerWithPhoneSession(
-                  "+234${phoneController.text.trim()}",
-                  () {
-                    setState(() {
-                      loading = false;
-                    });
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (c) => VerifyOTP(
-                                currentPhone: phoneController.text,
-                              )),
-                    );
-                  },
-                  () {
+                if (_formKey.currentState!.validate()) {
+                  // If the form is valid,login the user.
+                  authService.login(
+                      emailController.text.trim(), passwordController.text, () {
+                    Navigator.pushNamed(context, 'home');
+                  }, () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('An error occurred'),
+                        backgroundColor: Colors.red,
+                        behavior: SnackBarBehavior.floating,
+                        content: Text('Something went wrong, try again'),
                       ),
                     );
-                  },
-                );
-
-                // setState should be inside the authService callback to ensure it is set
+                  });
+                }
               },
               child: Container(
                 padding: const EdgeInsets.all(10),
@@ -113,9 +102,12 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 child: Center(
                   child: loading
-                      ? const CircularProgressIndicator()
+                      ? const CircularProgressIndicator(
+                          backgroundColor: Colors.transparent,
+                          color: Colors.black,
+                        )
                       : const Text(
-                          "Send OTP",
+                          "Log in",
                           style: TextStyle(color: Colors.white, fontSize: 22),
                         ),
                 ),
@@ -129,6 +121,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 const Text(
                   "Don't have an account yet?",
+                  style: TextStyle(fontSize: 18),
                 ),
                 TextButton(
                   onPressed: () {
@@ -141,9 +134,8 @@ class _LoginPageState extends State<LoginPage> {
                       : Text(
                           'Register Now',
                           style: TextStyle(
-                            decoration: TextDecoration.underline,
                             color: Theme.of(context).colorScheme.primary,
-                            fontSize: 14,
+                            fontSize: 18,
                           ),
                         ),
                 ),
@@ -156,5 +148,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-var phoneController = TextEditingController();

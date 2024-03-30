@@ -5,10 +5,20 @@ import 'package:flutter/material.dart';
 class AuthService with ChangeNotifier {
   late final Account account;
   late Token user;
-  
 
   AuthService(Client client) {
     account = Account(client);
+  }
+
+  Future login(
+      String email, String password, nextStep, handleLoginError) async {
+    try {
+      await account.createEmailSession(email: email, password: password);
+      nextStep();
+    } catch (e) {
+      print(e);
+      handleLoginError();
+    }
   }
 
   Future<void> registerWithPhoneSession(
@@ -18,7 +28,6 @@ class AuthService with ChangeNotifier {
           userId: ID.unique(), phone: phoneNumber);
       nextScreen();
     } catch (e) {
-      print(e);
       handleAuthError();
     }
   }
@@ -30,8 +39,9 @@ class AuthService with ChangeNotifier {
       await account.updatePhoneSession(userId: user.userId, secret: otp);
       nextScreen();
     } catch (e) {
-      print(e);
       handleAuthError();
     }
   }
+
+  // logout
 }

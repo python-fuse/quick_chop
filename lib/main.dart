@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quick_chop/pages/home_page.dart';
+import 'package:quick_chop/pages/login_page.dart';
+import 'package:quick_chop/pages/register.dart';
+import 'package:quick_chop/pages/verify_otp_page.dart';
 import 'package:quick_chop/pages/welcome_page.dart';
 import 'package:quick_chop/theme/theme_provider.dart';
 import 'package:appwrite/appwrite.dart'; // Import the Appwrite library
@@ -35,6 +39,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        'home': (context) => const HomePage(),
+        'login': (context) => const LoginPage(),
+        'register': (context) => const RegisterPage(),
+      },
       title: 'Quick Chop',
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).currentTheme,
