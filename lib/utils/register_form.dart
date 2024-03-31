@@ -46,7 +46,9 @@ class RegisterForm extends StatelessWidget {
             keyboardType: TextInputType.phone,
             isObscured: false,
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (value.length > 11) {
+                return 'Number too long';
+              } else if (value == null || value.isEmpty || value.length < 10) {
                 return 'Please enter your phone number';
               }
               return null;

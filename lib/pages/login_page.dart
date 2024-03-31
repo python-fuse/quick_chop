@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:quick_chop/pages/home_page.dart';
 import 'package:quick_chop/pages/register.dart';
 import 'package:quick_chop/services/auth_service.dart';
 import 'package:quick_chop/utils/login_form.dart';
@@ -13,7 +14,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool loading = false;
+  bool isloading = false;
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -22,9 +23,25 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);
 
+    String handleError(error) {
+      switch (error) {
+        case 'user_password_mismatch':
+          return 'Incorrect Password';
+        case 'user_blocked':
+          return 'Your account has been blocked! Contact administrator.';
+        case 'user_invalid_credentials':
+          return 'Email or password not correct';
+        case 'user_not_found':
+          return "User with this email not found, Create an account";
+        default:
+          return 'Something went wrong, Try again';
+      }
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Sign In',
             style: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
@@ -77,20 +94,36 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 20),
             GestureDetector(
               onTap: () {
+                setState(() {
+                  isloading = true;
+                });
                 if (_formKey.currentState!.validate()) {
                   // If the form is valid,login the user.
                   authService.login(
-                      emailController.text.trim(), passwordController.text, () {
-                    Navigator.pushNamed(context, '/home');
-                  }, () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        backgroundColor: Colors.red,
-                        behavior: SnackBarBehavior.floating,
-                        content: Text('Something went wrong, try again'),
-                      ),
-                    );
-                  });
+                    emailController.text.trim(),
+                    passwordController.text,
+                    () {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (c) => const HomePage()));
+                    },
+                    (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red,
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(
+                            handleError(e.type),
+                          ),
+                        ),
+                      );
+                    },
+                  ).then(
+                    (value) => setState(
+                      () {
+                        isloading = false;
+                      },
+                    ),
+                  );
                 }
               },
               child: Container(
@@ -101,10 +134,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 width: double.infinity,
                 child: Center(
-                  child: loading
+                  child: isloading == true
                       ? const CircularProgressIndicator(
                           backgroundColor: Colors.transparent,
-                          color: Colors.black,
+                          color: Colors.white,
+                          strokeWidth: 2,
                         )
                       : const Text(
                           "Log in",
@@ -129,15 +163,13 @@ class _LoginPageState extends State<LoginPage> {
                       MaterialPageRoute(builder: (c) => const RegisterPage()),
                     );
                   },
-                  child: loading
-                      ? const CircularProgressIndicator()
-                      : Text(
-                          'Register Now',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 18,
-                          ),
-                        ),
+                  child: Text(
+                    'Register Now',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 18,
+                    ),
+                  ),
                 ),
               ],
             ),

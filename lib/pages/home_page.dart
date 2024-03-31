@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
- List<Widget> pages = [MenuPage(), const CartPage(), const ProfilePage()];
+ List<Widget> pages = [const MenuPage(), const CartPage(), const ProfilePage()];
 int currentPage = 0;
 
 class _HomePageState extends State<HomePage> {

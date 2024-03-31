@@ -25,9 +25,9 @@ class _PasswordInputState extends State<PasswordInput> {
   Widget build(BuildContext context) {
     return TextFormField(
       validator: widget.validator,
+      obscureText: isObscured,
       autocorrect: false,
       controller: widget.controller,
-      obscureText: true,
       keyboardType: widget.keyboardType,
       decoration: InputDecoration(
         hintText: widget.hint,
@@ -35,7 +35,9 @@ class _PasswordInputState extends State<PasswordInput> {
             TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
         prefixIcon: widget.icon,
         suffixIcon: IconButton(
-          icon: Icon(isObscured ? Icons.visibility : Icons.visibility_off,color:Colors.pink),
+          icon: Icon(
+              isObscured == true ? Icons.visibility : Icons.visibility_off,
+              color: Colors.pink),
           onPressed: () {
             setState(() {
               isObscured = !isObscured;

@@ -6,6 +6,7 @@ class AuthService with ChangeNotifier {
   late final Account account;
   late final Databases databases;
   late Token user;
+  late Document currentUser;
 
   AuthService(Client client) {
     account = Account(client);
@@ -28,7 +29,6 @@ class AuthService with ChangeNotifier {
       await saveUserData(fullName, level, department);
       nextStep();
     } catch (e) {
-      print(e);
       handleError();
     }
   }
@@ -38,8 +38,8 @@ class AuthService with ChangeNotifier {
     try {
       await account.createEmailSession(email: email, password: password);
       nextStep();
-    } catch (e) {
-      handleLoginError();
+    } on AppwriteException catch (e) {
+      handleLoginError(e);
     }
   }
 
@@ -49,9 +49,8 @@ class AuthService with ChangeNotifier {
       user = await account.createPhoneSession(
           userId: ID.unique(), phone: phoneNumber);
       nextScreen();
-    } catch (e) {
-      print(e);
-      handleAuthError();
+    } on AppwriteException catch (e) {
+      handleAuthError(e.type);
     }
   }
 
@@ -68,9 +67,10 @@ class AuthService with ChangeNotifier {
 
   // logout
 
-  Future<void> logout() async {
+  Future<void> logout({required nextStep}) async {
     try {
       await account.deleteSession(sessionId: 'current');
+      nextStep();
     } catch (e) {
       return;
     }

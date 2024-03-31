@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:quick_chop/models/food_model.dart';
+import 'package:quick_chop/services/user_service.dart';
 import 'package:quick_chop/utils/category_tile.dart';
-import 'package:quick_chop/utils/food_tile.dart';
 import 'package:quick_chop/utils/popular_food.dart';
 
 // ignore: must_be_immutable
-class MenuPage extends StatelessWidget {
-  MenuPage({super.key});
+class MenuPage extends StatefulWidget {
+  const MenuPage({super.key});
+
+  @override
+  State<MenuPage> createState() => _MenuPageState();
+}
+
+class _MenuPageState extends State<MenuPage> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<UserService>(context, listen: false).getCurrentUser();
+  }
 
   List<Food> popularfoods = [
     Food(
@@ -75,14 +87,18 @@ class MenuPage extends StatelessWidget {
         category: FoodCategory.snack,
         availableAddons: []),
   ];
+
   @override
   Widget build(BuildContext context) {
+    final userData = Provider.of<UserService>(context).currentUserData;
+    final fullName = userData['fullName'];
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.pink.shade100.withOpacity(0.3),
         title: Text(
-          'Welcome, User',
+          'Welcome, ${fullName != null ? fullName.split(' ')[0] : ''}',
           style: GoogleFonts.poppins(fontSize: 24),
         ),
         actions: [
@@ -113,7 +129,6 @@ class MenuPage extends StatelessWidget {
             ),
           ),
           Scrollbar(
-            thumbVisibility: false,
             child: SingleChildScrollView(
               padding: const EdgeInsets.only(top: 10, left: 10),
               child: Column(
@@ -197,28 +212,28 @@ class MenuPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
 
-                  SizedBox(
-                    height: 300,
-                    width: double.infinity,
-                    child: GridView.builder(
-                      itemCount: popularfoods.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        // mainAxisSpacing: 10,
-                        // crossAxisSpacing: 10,
-                        // childAspectRatio: 0.8,
-                      ),
-                      itemBuilder: (context, index) {
-                        return FoodItem(
-                          name: popularfoods[index].name,
-                          description: popularfoods[index].description,
-                          price: popularfoods[index].price,
-                          imagePath: popularfoods[index].imagePath,
-                        );
-                      },
-                    ),
-                  ),
+                  // SizedBox(
+                  //   height: 300,
+                  //   width: double.infinity,
+                  //   child: GridView.builder(
+                  //     itemCount: popularfoods.length,
+                  //     gridDelegate:
+                  //         const SliverGridDelegateWithFixedCrossAxisCount(
+                  //       crossAxisCount: 2,
+                  //       // mainAxisSpacing: 10,
+                  //       // crossAxisSpacing: 10,
+                  //       // childAspectRatio: 0.8,
+                  //     ),
+                  //     itemBuilder: (context, index) {
+                  //       return FoodItem(
+                  //         name: popularfoods[index].name,
+                  //         description: popularfoods[index].description,
+                  //         price: popularfoods[index].price,
+                  //         imagePath: popularfoods[index].imagePath,
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
                 ],
               ),
             ),

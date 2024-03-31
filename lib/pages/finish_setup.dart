@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_chop/services/auth_service.dart';
+import 'package:quick_chop/utils/password_input.dart';
 import 'package:quick_chop/utils/text_input.dart';
 
 class FinishSetup extends StatefulWidget {
@@ -65,7 +66,6 @@ class _FinishSetupState extends State<FinishSetup> {
               ),
 
               const SizedBox(height: 5),
-//TODO: Fix the input fields
               // Phone input
               Form(
                 key: _formKey,
@@ -127,12 +127,11 @@ class _FinishSetupState extends State<FinishSetup> {
                       },
                     ),
                     const SizedBox(height: 10),
-                    TextInput(
+                    PasswordInput(
                       icon: const Icon(Icons.lock_outline),
                       controller: passwordController,
                       hint: 'Password',
                       keyboardType: TextInputType.text,
-                      isObscured: true,
                       validator: (value) {
                         if (value.length < 8) {
                           return 'Password must at least 8 characters';
@@ -143,12 +142,11 @@ class _FinishSetupState extends State<FinishSetup> {
                       },
                     ),
                     const SizedBox(height: 10),
-                    TextInput(
+                    PasswordInput(
                       icon: const Icon(Icons.lock_outline),
                       controller: confirmPasswordController,
                       hint: 'Confirm password',
                       keyboardType: TextInputType.text,
-                      isObscured: true,
                       validator: (value) {
                         if (value.length < 8) {
                           return 'Password must at least 8 characters';

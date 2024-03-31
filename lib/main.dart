@@ -4,6 +4,7 @@ import 'package:quick_chop/pages/home_page.dart';
 import 'package:quick_chop/pages/login_page.dart';
 import 'package:quick_chop/pages/register.dart';
 import 'package:quick_chop/pages/welcome_page.dart';
+import 'package:quick_chop/services/user_service.dart';
 import 'package:quick_chop/theme/theme_provider.dart';
 import 'package:appwrite/appwrite.dart'; // Import the Appwrite library
 import 'package:quick_chop/services/auth_service.dart'; // Import your AuthService
@@ -22,6 +23,9 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
           create: (context) => ThemeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UserService(client),
         ),
         ChangeNotifierProvider(
           create: (context) => AuthService(client), // Provide AuthService

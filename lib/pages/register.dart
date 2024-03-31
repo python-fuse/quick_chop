@@ -13,6 +13,8 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  bool isloading = false;
+
   final _formKey = GlobalKey<FormState>();
 
   var phoneController = TextEditingController();
@@ -23,6 +25,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    String handleError(error) {
+      switch (error) {
+        case 'user_phone_already_exists	':
+          return 'Account already exists, Please login';
+        default:
+          return 'Something went wrong, Try again';
+      }
+    }
+
     final authService = Provider.of<AuthService>(context, listen: false);
     return Scaffold(
       //resizeToAvoidBottomInset: false,
@@ -53,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.inversePrimary),
               ),
-                            const SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(
                 'Enter your phone number to get started',
                 style: TextStyle(
@@ -73,8 +84,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   keyboardType: TextInputType.phone,
                   isObscured: false,
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Enter your number';
+                    if (value.length > 11) {
+                      return 'Number too long';
+                    } else if (value == null ||
+                        value.isEmpty ||
+                        value.length < 10) {
+                      return 'Please enter your phone number';
                     }
                     return null;
                   },
@@ -86,9 +101,13 @@ class _RegisterPageState extends State<RegisterPage> {
               GestureDetector(
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
+                    setState(() {
+                      isloading = true;
+                    });
                     // If the form is valid, send otp.
                     authService.registerWithPhoneSession(
-                        "+234${phoneController.text}", () {
+                        "+234${phoneController.text.length == 11 ? phoneController.text.substring(1) : phoneController.text}",
+                        () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -96,12 +115,21 @@ class _RegisterPageState extends State<RegisterPage> {
                               VerifyOTP(currentPhone: phoneController.text),
                         ),
                       );
-                    }, () {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    }, (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
                           backgroundColor: Colors.red,
                           behavior: SnackBarBehavior.floating,
-                          content: Text('Something went wrong, try again')));
-                    });
+                          content: Text(handleError(e)),
+                        ),
+                      );
+                    }).then(
+                      (value) => setState(
+                        () {
+                          isloading = false;
+                        },
+                      ),
+                    );
                   }
                 },
                 child: Container(
@@ -110,11 +138,17 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(8),
                       color: Theme.of(context).colorScheme.primary),
                   width: double.infinity,
-                  child: const Center(
-                    child: Text(
-                      "Send OTP",
-                      style: TextStyle(color: Colors.white, fontSize: 22),
-                    ),
+                  child: Center(
+                    child: isloading == true
+                        ? const CircularProgressIndicator(
+                            backgroundColor: Colors.transparent,
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          )
+                        : const Text(
+                            "Send OTP",
+                            style: TextStyle(color: Colors.white, fontSize: 22),
+                          ),
                   ),
                 ),
               ),
