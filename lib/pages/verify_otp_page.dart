@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:otp_text_field/otp_field.dart';
@@ -20,6 +22,46 @@ class VerifyOTP extends StatefulWidget {
 }
 
 class _VerifyOTPState extends State<VerifyOTP> {
+  bool showResendButton = false;
+  String resendButtonText = '30';
+  Timer? _timer;
+  int _start = 30;
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  void startTimer() {
+    if (_timer != null) {
+      _timer!.cancel();
+    }
+    _start = 30;
+    showResendButton = false;
+    resendButtonText = '$_start';
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (_start == 0) {
+        setState(() {
+          showResendButton = true;
+          resendButtonText = 'Resend Code';
+          timer.cancel();
+        });
+      } else {
+        setState(() {
+          _start--;
+          resendButtonText = '$_start';
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);
@@ -88,14 +130,16 @@ class _VerifyOTPState extends State<VerifyOTP> {
                     "Didn't receive SMS?",
                   ),
                   TextButton(
-                    onPressed: () {
-                      //TODO: Implement resend functionality
-                    },
+                    onPressed: showResendButton
+                        ? () async {
+                            await authService.resendOtp(widget.currentPhone);
+                            startTimer();
+                          }
+                        : null,
                     child: Text(
-                      'Resend Code',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                      resendButtonText,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.pink),
                     ),
                   ),
                 ],

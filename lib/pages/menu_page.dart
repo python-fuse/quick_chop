@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_chop/models/food_model.dart';
 import 'package:quick_chop/services/user_service.dart';
-import 'package:quick_chop/utils/category_tile.dart';
+import 'package:quick_chop/utils/food_tile.dart';
 import 'package:quick_chop/utils/popular_food.dart';
 
 // ignore: must_be_immutable
@@ -99,7 +99,7 @@ class _MenuPageState extends State<MenuPage> {
         backgroundColor: Colors.pink.shade100.withOpacity(0.3),
         title: Text(
           'Welcome, ${fullName != null ? fullName.split(' ')[0] : ''}',
-          style: GoogleFonts.poppins(fontSize: 24),
+          style: GoogleFonts.poppins(fontSize: 28),
         ),
         actions: [
           IconButton(
@@ -130,62 +130,52 @@ class _MenuPageState extends State<MenuPage> {
           ),
           Scrollbar(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.only(top: 10, left: 10),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Ready to order your favourite food?',
-                    style: GoogleFonts.poppins(fontSize: 32),
-                    textAlign: TextAlign.left,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                        hintText: 'Search for food',
-                        prefixIcon: const Icon(Icons.search),
-                        filled: true,
-                        fillColor: Theme.of(context).colorScheme.background,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide.none,
-                        )),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  // add a listview of filtered food categories here [beakfast, lunch, snacks, drinks]
-                  SizedBox(
-                    height: 50,
-                    child: ListView.builder(
-                      itemCount: 4,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return const CategoryTile(categoryName: 'Breakfast');
-                      },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Text(
+                      'Ready to order your favourite food?',
+                      style: GoogleFonts.poppins(fontSize: 32),
+                      textAlign: TextAlign.left,
                     ),
                   ),
-                  const SizedBox(
-                    height: 50,
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(1),
+                          hintText: 'Search for food',
+                          prefixIcon: const Icon(Icons.search),
+                          filled: true,
+                          fillColor: Theme.of(context).colorScheme.background,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          )),
+                    ),
+                  ),
+                  // add a listview of filtered food categories here [beakfast, lunch, snacks, drinks]
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Popular Food',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: const Text('View all'),
+                        )
+                      ],
+                    ),
                   ),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Popular Food',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text('View all'),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
                   SizedBox(
                     height: 190,
                     child: ListView.builder(
@@ -204,36 +194,10 @@ class _MenuPageState extends State<MenuPage> {
                     ),
                   ),
 
-                  const SizedBox(height: 20),
-
                   const Text(
                     'All Available Food',
                     style: TextStyle(fontSize: 24),
                   ),
-                  const SizedBox(height: 10),
-
-                  // SizedBox(
-                  //   height: 300,
-                  //   width: double.infinity,
-                  //   child: GridView.builder(
-                  //     itemCount: popularfoods.length,
-                  //     gridDelegate:
-                  //         const SliverGridDelegateWithFixedCrossAxisCount(
-                  //       crossAxisCount: 2,
-                  //       // mainAxisSpacing: 10,
-                  //       // crossAxisSpacing: 10,
-                  //       // childAspectRatio: 0.8,
-                  //     ),
-                  //     itemBuilder: (context, index) {
-                  //       return FoodItem(
-                  //         name: popularfoods[index].name,
-                  //         description: popularfoods[index].description,
-                  //         price: popularfoods[index].price,
-                  //         imagePath: popularfoods[index].imagePath,
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
                 ],
               ),
             ),

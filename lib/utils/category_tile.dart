@@ -15,9 +15,9 @@ class CategoryTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
       ),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        const CircleAvatar(
+        CircleAvatar(
           radius: 18,
-          child: Icon(Icons.breakfast_dining),
+          child: Image.asset('lib/assets/drinks.jpg'),
         ),
         Text(categoryName)
       ]),

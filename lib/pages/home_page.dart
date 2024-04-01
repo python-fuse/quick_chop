@@ -12,10 +12,16 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
- List<Widget> pages = [const MenuPage(), const CartPage(), const ProfilePage()];
+List<Widget> pages = [const MenuPage(), const CartPage(), const ProfilePage()];
 int currentPage = 0;
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    currentPage = 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +35,6 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavyBar(
         backgroundColor: Colors.white,
         showElevation: true,
-
         items: [
           BottomNavyBarItem(
             icon: const Icon(Icons.restaurant_menu),

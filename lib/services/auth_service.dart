@@ -65,6 +65,12 @@ class AuthService with ChangeNotifier {
     }
   }
 
+// resend otp
+
+  Future<void> resendOtp(phoneNumber) async {
+    await account.createPhoneSession(userId: user.userId, phone: phoneNumber);
+  }
+
   // logout
 
   Future<void> logout({required nextStep}) async {

@@ -34,6 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
       }
     }
 
+    String phoneNumber = phoneController.text;
     final authService = Provider.of<AuthService>(context, listen: false);
     return Scaffold(
       //resizeToAvoidBottomInset: false,
@@ -106,13 +107,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     });
                     // If the form is valid, send otp.
                     authService.registerWithPhoneSession(
-                        "+234${phoneController.text.length == 11 ? phoneController.text.substring(1) : phoneController.text}",
+                        "+234${phoneNumber.length == 11 ? phoneNumber.substring(1) : phoneNumber}",
                         () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              VerifyOTP(currentPhone: phoneController.text),
+                          builder: (context) => VerifyOTP(
+                            currentPhone:
+                                "+234${phoneNumber.length == 11 ? phoneNumber.substring(1) : phoneNumber}",
+                          ),
                         ),
                       );
                     }, (e) {

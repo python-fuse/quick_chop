@@ -41,7 +41,7 @@ dependencies:
   bottom_navy_bar: ^6.0.0
   appwrite: ^11.0.1
   easy_loading_button: ^0.3.2
-
+  infinite_carousel: 
 dev_dependencies:
   flutter_test:
     sdk: flutter
