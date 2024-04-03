@@ -47,9 +47,10 @@ class ProfilePage extends StatelessWidget {
                                 blurRadius: 8,
                                 spreadRadius: 2),
                           ]),
-                      child: const CircleAvatar(
+                      child: CircleAvatar(
                         radius: 70,
-                        backgroundImage: AssetImage('lib/assets/user.png'),
+                        backgroundImage: NetworkImage(userData['profile_img'] ??
+                            'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png'),
                       ),
                     ),
                     const SizedBox(height: 10),

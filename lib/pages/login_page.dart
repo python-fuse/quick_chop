@@ -5,6 +5,7 @@ import 'package:quick_chop/pages/home_page.dart';
 import 'package:quick_chop/pages/register.dart';
 import 'package:quick_chop/services/auth_service.dart';
 import 'package:quick_chop/utils/login_form.dart';
+import 'package:quick_chop/utils/transition_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -160,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (c) => const RegisterPage()),
+                      CustomRouter(page: const RegisterPage()),
                     );
                   },
                   child: Text(
