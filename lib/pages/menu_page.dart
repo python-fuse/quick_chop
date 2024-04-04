@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_chop/models/food_model.dart';
 import 'package:quick_chop/services/user_service.dart';
-import 'package:quick_chop/utils/food_tile.dart';
 import 'package:quick_chop/utils/popular_food.dart';
 
 // ignore: must_be_immutable

@@ -30,4 +30,35 @@ class UserService with ChangeNotifier {
       return;
     }
   }
+
+  Future<void> updateUserInfo({
+    required Map<String, String> userInfo,
+    required Function handleError,
+    required Function nextStep,
+  }) async {
+    try {
+      currentUserData['level'] = userInfo['level'];
+      currentUserData['department'] = userInfo['department'];
+
+      notifyListeners();
+      nextStep();
+    } on AppwriteException catch (e) {
+      handleError(e.message);
+    }
+  }
+
+  Future<void> updatePassword(
+    String currentPassword,
+    String newPassword, {
+    required Function handleError,
+    required Function nextStep,
+  }) async {
+    try {
+      await account.updatePassword(
+          oldPassword: currentPassword, password: newPassword);
+      nextStep();
+    } on AppwriteException catch (e) {
+      handleError(e.message);
+    }
+  }
 }

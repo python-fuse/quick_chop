@@ -7,9 +7,9 @@ class CustomRouter extends PageRouteBuilder {
       : super(
           pageBuilder: (context, animation, secondaryAnimation) => page,
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            double  begin =  0;
+            double begin = 0;
             double end = 1;
-            var curve = Curves.bounceInOut;
+            var curve = Curves.easeInOut;
 
             var tween =
                 Tween(begin: begin, end: end).chain(CurveTween(curve: curve));

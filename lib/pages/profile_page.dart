@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:quick_chop/pages/login_page.dart';
+import 'package:quick_chop/pages/update_profile.dart';
 import 'package:quick_chop/services/auth_service.dart';
 import 'package:quick_chop/services/user_service.dart';
 import 'package:quick_chop/utils/info_tile.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);
@@ -94,7 +100,11 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // TODO: Implement edit profile functionality
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (ctx) => const EditProfilePage()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
